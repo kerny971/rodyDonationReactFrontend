@@ -1,10 +1,10 @@
 import React from 'react'
-import logo from './logo.svg';
 import './App.css';
 import Home from './components/home/Home'
 import Pay from './components/stripe/Pay'
 import Router from 'react-easy-router';
 import { BrowserRouter } from 'react-router-dom';
+import PayConfirm from "./components/stripe/PayConfirm";
 
 class App extends React.Component {
 
@@ -20,6 +20,9 @@ class App extends React.Component {
             {
               path: "/stripe",
               element: <Pay />
+            }, {
+              path: "/confirm",
+              element: <PayConfirm />
             }
           ]
         }

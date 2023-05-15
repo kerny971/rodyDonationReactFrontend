@@ -50,7 +50,7 @@ export default class PayDonation extends React.Component {
                         <div className="grid">
                             <div>
                                 <label htmlFor="amount">Montant</label>
-                                <input min="0" max="100" step="0.01" type="number" name="amount" id="amount" placeholder="1.00 €"/>
+                                <input min="0" max="500" step="0.01" type="number" name="amount" id="amount" placeholder="1.00 €"/>
                             </div>
                             <section>
                                 <div>
@@ -97,7 +97,7 @@ export default class PayDonation extends React.Component {
 
                                     <div>
                                         <label htmlFor="year">Année</label>
-                                        <input type="number" name="year" id="year" placeholder="2019"/>
+                                        <input type="text" name="year" id="year" placeholder="2019"/>
                                     </div>
 
                                     <div>
@@ -108,12 +108,12 @@ export default class PayDonation extends React.Component {
                                 </div>
 
                                 <br/>
-                                
+
                                 { payment.load ? <button type="submit" disabled>PAIEMENT EN COURS...</button> : <button type="submit">JE DONNE</button>}
-                                
+
                             </section>
 
-                        
+
                         </div>
                     </form>
                 }
