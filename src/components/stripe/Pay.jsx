@@ -1,6 +1,6 @@
 import React from "react";
 import PayDonation from "./FormPay.js/PayDonation";
-import axios, {isCancel, AxiosError} from "axios";
+import axios from "axios";
 import { BroadcastChannel } from 'broadcast-channel'
 
 
@@ -12,6 +12,7 @@ export default class Pay extends React.Component {
         super(props);
         this.payDonationSubmit = this.payDonationSubmit.bind(this);
         this.APIcreateStripePayDonation = this.APIcreateStripePayDonation.bind(this);
+        this.closeError = this.closeError.bind(this);
         this.state = {
             payment: {
                 load: false,
@@ -101,7 +102,6 @@ export default class Pay extends React.Component {
 
     }
 
-
     #paymentTreatmentNext3DS(res) {
 
         if ((res.paymentIntents.status !== "requires_action") && (res.paymentIntents.next_action.type !== "redirect_to_url")) {
@@ -109,10 +109,13 @@ export default class Pay extends React.Component {
             this.setState((prev) => ({
                 payment: {
                     success: false,
+                    status: "3DSAUTH-000",
                     message: 'Une erreur inconnu s\'est produite lors du traitement',
                     auth3DS: {
-                        status: 'UndefinedAPI-003',
                         message: 'Une erreur inconnu s\'est produite lors du traitement',
+                        paymentIntent: res.paymentIntents,
+                        status: '3DSAUTH-000',
+                        error: res.error,
                         api: {
                             status: res.paymentIntents.status,
                             clientSecret: res.paymentIntents.client_secret,
@@ -138,6 +141,7 @@ export default class Pay extends React.Component {
                 this.setState((prev) => ({
                     payment : {
                         success: false,
+                        status: "3DSAUTH-222",
                         message: msg.data.paymentIntent.last_payment_error.message ?? 'Une erreur à eu lieu lors de la validation du Paiement...',
                         code: '3DSAUTH-222',
                         error: msg.data.error,
@@ -190,7 +194,7 @@ export default class Pay extends React.Component {
             this.setState((prev) => ({
                 payment: {
                     success: false,
-                    message: error.response.data.paymentIntent.last_payment_error.message ?? 'Une erreur s\'est produite...',
+                    message: error.response.data.error.msg ?? 'Une erreur s\'est produite...',
                     paymentIntent: data.paymentIntent,
                     status: '3DSAUTH-666',
                     error: error.response.data.error,
@@ -202,7 +206,6 @@ export default class Pay extends React.Component {
             }))
         })
     }
-
 
     payDonationSubmit (e) {
         e.preventDefault()
@@ -228,6 +231,23 @@ export default class Pay extends React.Component {
     }
 
 
+
+    closeError () {
+        this.setState((previousState) => ({
+            payment: {
+                load: false,
+                success: false,
+                code: null,
+                status: null,
+                error: null,
+                paymentIntent: null,
+                message: null,
+                auth3DS: null
+            }
+        }))
+    }
+
+
     render () {
 
         const { payment } = this.state
@@ -236,7 +256,7 @@ export default class Pay extends React.Component {
 
 
         return (
-            <main className="container">
+            <main id="main" className="container">
                 <h1>Vas-y mon Poto</h1>
                 <p>
                     Ces jours-ci c'est la hess, donc si tu peut me faire un p'tit don se serai cool ! <br/>
@@ -244,11 +264,11 @@ export default class Pay extends React.Component {
                 </p>
                 <PayDonation payment={payment} payDonationSubmit={(e) => this.payDonationSubmit(e)}/>
                 {
-                    payment.status ?
+                    payment.status && payment.error ?
                       <dialog open>
                           <article>
                               <header>
-                                  <a href="#close" aria-label="Close" className="close"></a>
+                                  <a href="#main" aria-label="Close" className="close" onClick={this.closeError}> </a>
                                   Erreur...
                               </header>
                               <p>
