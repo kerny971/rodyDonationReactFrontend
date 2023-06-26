@@ -130,13 +130,8 @@ export default class Pay extends React.Component {
         }
 
         const window3DS = window.open(res.paymentIntents.next_action.redirect_to_url.url, '_blank');
-        console.log(window3DS);
         const channel = new BroadcastChannel('payment')
         channel.onmessage = (msg) => {
-
-            console.log(msg)
-
-
             if (msg.status < 200 || msg.status >= 400) {
                 this.setState((prev) => ({
                     payment : {
@@ -172,7 +167,6 @@ export default class Pay extends React.Component {
             },
             data: data
         }).then((res) => {
-            console.log(res)
             if (res.data.paymentIntents.status === 'succeeded') {
                 this.setState((prev) => ({
                     payment: {
@@ -190,7 +184,6 @@ export default class Pay extends React.Component {
             this.#paymentTreatmentNext3DS(res.data);
 
         }).catch((error) => {
-            console.log(error.response);
             this.setState((prev) => ({
                 payment: {
                     success: false,
@@ -252,15 +245,11 @@ export default class Pay extends React.Component {
 
         const { payment } = this.state
 
-        console.log(payment)
-
 
         return (
             <main id="main" className="container">
-                <h1>Vas-y mon Poto</h1>
                 <p>
-                    Ces jours-ci c'est la hess, donc si tu peut me faire un p'tit don se serai cool ! <br/>
-                    <u>Renseigne tes infos ici :</u>
+                    Les données saisis dans ce formulaire ne sont pas enregistrée. La plateforme de paiement Stripe est la seul à sauvegarder les données de paiements. Vérifier la connexion HTTPS ! Utiliser une carte virtuelle de préférence à usage unique (ex: Revolut) ! Pas de montant exhorbitant !<br/>
                 </p>
                 <PayDonation payment={payment} payDonationSubmit={(e) => this.payDonationSubmit(e)}/>
                 {

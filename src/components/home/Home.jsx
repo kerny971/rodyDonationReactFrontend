@@ -5,16 +5,21 @@ export default class Home extends React.Component {
 
     render () {
         return (
-            <main className='container'>
-                <h1 align="center">
-                    Bienvenue mon poto !
-                </h1>
+            <main className='container' style={{ padding: "1em" }}>
+                <p style={{ fontSize: "2em" }}>
+                    Bienvenue cher utilisateur !
+                </p>
 
-                <div align="center">
-                    <p>
-                        Voilà mon poto, je me suis un peu fais chier à dev se site mais j'sais pas trop koi mettre comme contenu. du coup je me suis dis si t mon poto tu me fait un don d'au moins 1 € pour me donner <strong>LA FORCE</strong> !
+                <div>
+                    <p style={{ fontSize: "0.9em" }}>
+                        Ami utilisateur, je me suis amusé à developper ce site ! je me suis dis : "je vais faire un site en React pour recevoir des paiements avec Stripe" ! En vrai je vend rien de spécial mais ce site à pour but de mettre en avant mes skills dans le développement informatique.<br/>
+                        Avec ce site, tu as la possibilitée de faire un paiement avec ta carte bleue et utilisant potentiellement l'authentification 3DSecure. 
+                        Ce site me servira surtout de test et me permettra de mieux appréhender le fonctionnement en production des systèmes de paiement en ligne.
+                        <br/><br/>
+                        Si tu souhaite soutenir mes recherches, tu peux faire un don au lien ci-dessous.
+                        Tout montant dérisoire ou tentative de fraude seront annulée ! Aucune carte bleue n'est enregistrée sauf les transactions aux systèmes de paiement.
                     </p>
-                    <h3><Link to={"/donation/stripe"}>Faire un don</Link></h3>
+                <Link to={"/donation/stripe"}>Faire un don</Link>
                 </div>
             </main>
         )

@@ -33,9 +33,17 @@ class App extends React.Component {
       element: <NotFound />
     }]
 
-    return <BrowserRouter>
-      <Router routes={routes}/>
-    </BrowserRouter>
+    return (
+      <>
+        <a href='https://github.com/kerny971' target='_blank' style={{display: "block", padding: ".5em"}} className='container'>
+            <h1 style={{ display: "inline-block", marginRight: ".5em"}} >RodyOne</h1>
+            <img src="/github-142-svgrepo-com.svg" style={{height: "2em", transform: "translateY(-.5em)", color: "#FFF"}} />
+        </a>
+        <BrowserRouter>
+          <Router routes={routes}/>
+        </BrowserRouter>
+      </>
+    )
   }
 
 }
