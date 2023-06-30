@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
 
 export default class PayDonation extends React.Component {
@@ -17,7 +16,7 @@ export default class PayDonation extends React.Component {
     #cc_format(value) {
         var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
         var matches = v.match(/\d{4,16}/g);
-        var match = matches && matches[0] || ''
+        var match = (matches && matches[0]) || ''
         var parts = []
         for (let i=0, len=match.length; i<len; i+=4) {
           parts.push(match.substring(i, i+4))
@@ -50,7 +49,7 @@ export default class PayDonation extends React.Component {
                         <div className="grid">
                             <div>
                                 <label htmlFor="amount">Montant</label>
-                                <input min="0" max="500" step="0.01" type="number" name="amount" id="amount" placeholder="1.00 €"/>
+                                <input min="0" max="500" step="0.01" type="text" name="amount" id="amount" placeholder="1.00 €"/>
                             </div>
                             <section>
                                 <div>
@@ -109,7 +108,7 @@ export default class PayDonation extends React.Component {
 
                                 <br/>
 
-                                { payment.load ? <button type="submit" disabled>PAIEMENT EN COURS...</button> : <button type="submit">JE DONNE</button>}
+                                { payment.load ? <button type="submit" className='secondary' disabled><progress style={{ transform: 'translateY(.4em)' }}></progress></button> : <button type="submit">JE DONNE</button>}
 
                             </section>
 

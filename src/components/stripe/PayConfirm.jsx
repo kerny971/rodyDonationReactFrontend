@@ -4,16 +4,13 @@ import axios from "axios";
 
 export default class PayConfirm extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
 
    APICheck3DSAuth (data) {
      const channel = new BroadcastChannel('payment')
     axios({
-      url: '/stripe/confirm',
+      url: process.env.REACT_APP_API_RODY_DONATION_CONFIRM_URL,
       method: 'POST',
-      baseURL: 'http://localhost:4000',
+      baseURL: process.env.REACT_APP_API_RODY_DONATION_BACKEND,
       headers: {
         'Content-Type': 'application/json'
       },

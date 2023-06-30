@@ -52,7 +52,7 @@ export default class Pay extends React.Component {
                     this.setState((prev) => ({
                         payment: {
                             success: false,
-                            message: data.paymentIntent.last_payment_error.message ?? 'Votre paiement est toujours en cours de traitement... !',
+                            message: data.paymentIntent.last_payment_error.message_traduction ?? 'Votre paiement est toujours en cours de traitement... !',
                             paymentIntent: data.paymentIntent,
                             status: '3DSAUTH-444',
                             error: data.error,
@@ -70,7 +70,7 @@ export default class Pay extends React.Component {
                     this.setState((prev) => ({
                         payment: {
                             success: false,
-                            message: data.paymentIntent.last_payment_error.message ?? 'Votre moyen de paiement n\'à pas été acceptée par notre module de paiement !',
+                            message: data.paymentIntent.last_payment_error.message_traduction ?? 'Votre moyen de paiement n\'à pas été acceptée par notre module de paiement !',
                             paymentIntent: data.paymentIntent,
                             status: '3DSAUTH-555',
                             error: data.error,
@@ -86,7 +86,7 @@ export default class Pay extends React.Component {
                     this.setState((prev) => ({
                         payment: {
                             success: false,
-                            message: data.paymentIntent.last_payment_error.message ?? 'Une erreur inconnue s\'est produite. Merci de contacter le support !',
+                            message: data.paymentIntent.last_payment_error.message_traduction ?? data.paymentIntent.last_payment_error.message,
                             paymentIntent: data.paymentIntent,
                             status: '3DSAUTH-333',
                             error: data.error,
@@ -129,7 +129,7 @@ export default class Pay extends React.Component {
             return;
         }
 
-        const window3DS = window.open(res.paymentIntents.next_action.redirect_to_url.url, '_blank');
+        window.open(res.paymentIntents.next_action.redirect_to_url.url, '_blank');
         const channel = new BroadcastChannel('payment')
         channel.onmessage = (msg) => {
             if (msg.status < 200 || msg.status >= 400) {
@@ -137,7 +137,7 @@ export default class Pay extends React.Component {
                     payment : {
                         success: false,
                         status: "3DSAUTH-222",
-                        message: msg.data.paymentIntent.last_payment_error.message ?? 'Une erreur à eu lieu lors de la validation du Paiement...',
+                        message: msg.data.paymentIntent.last_payment_error.message_traduction ?? 'Une erreur à eu lieu lors de la validation du Paiement...',
                         code: '3DSAUTH-222',
                         error: msg.data.error,
                         paymentIntent: msg.data.paymentIntent,
@@ -167,6 +167,7 @@ export default class Pay extends React.Component {
             },
             data: data
         }).then((res) => {
+            console.log(res.data)
             if (res.data.paymentIntents.status === 'succeeded') {
                 this.setState((prev) => ({
                     payment: {
@@ -184,10 +185,11 @@ export default class Pay extends React.Component {
             this.#paymentTreatmentNext3DS(res.data);
 
         }).catch((error) => {
+            console.log(error.response)
             this.setState((prev) => ({
                 payment: {
                     success: false,
-                    message: error.response.data.error.msg ?? 'Une erreur s\'est produite...',
+                    message: error.response.data.error.message_traduction ?? 'Une erreur s\'est produite...',
                     paymentIntent: data.paymentIntent,
                     status: '3DSAUTH-666',
                     error: error.response.data.error,
@@ -223,8 +225,6 @@ export default class Pay extends React.Component {
         this.APIcreateStripePayDonation(data)
     }
 
-
-
     closeError () {
         this.setState((previousState) => ({
             payment: {
@@ -247,7 +247,7 @@ export default class Pay extends React.Component {
 
 
         return (
-            <main id="main" className="container">
+            <main id="main" className="container" style={{ padding: "1em 1.5em"}}>
                 <p>
                     Les données saisis dans ce formulaire ne sont pas enregistrée. La plateforme de paiement Stripe est la seul à sauvegarder les données de paiements. Vérifier la connexion HTTPS ! Utiliser une carte virtuelle de préférence à usage unique (ex: Revolut) ! Pas de montant exhorbitant !<br/>
                 </p>
