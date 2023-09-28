@@ -12,4 +12,4 @@ Installer les modules de l'application (CLI) :
 Modifier le fichier .env
 
 ## Demo
-Demo available at : [Rody Stripe](https://stripe.rody.works)
+Demo available at : [Rody Stripe](https://stripe.rody.network)
